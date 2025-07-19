@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  pg_subscription_service:
+    image: postgres
+    env_file: ".env"
+    container_name: pg_subscription_service
+    ports:
+      - 5433:5432
+    volumes: 
+      - pg_volume_subscription_service:/var/lib/postgres/data
+    networks:
+      rest_api_app:
+        aliases: [pg_subscription_service]
+
+volumes:
+  pg_volume_subscription_service:
+networks:
+  rest_api_app:
+    name: rest_api_app
