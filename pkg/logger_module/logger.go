@@ -58,6 +58,7 @@ func (logger *Logger) Error(v ...interface{}) {
 func (logger *Logger) Fatal(v ...interface{}) {
 	logger.mutex.Lock()
 	defer logger.mutex.Unlock()
-	logger.SetPrefix("[Error]")
+	logger.SetPrefix("[FATAL]")
 	logger.Println(v...)
+	os.Exit(1)
 }

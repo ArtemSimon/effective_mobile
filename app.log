@@ -48,3 +48,55 @@
 [DEBUG]2025/07/20 21:58:10 logger.go:48: Calling service to get subscription subscription_id cf542b22-3ed8-487a-b745-64554fc96eac
 [INFO]2025/07/20 21:58:10 logger.go:41: Subscription successfully get subscription_id cf542b22-3ed8-487a-b745-64554fc96eac service_name Yandex user_id 550e8400-e29b-41d4-a716-446655440000
 [INFO]2025/07/20 22:00:58 logger.go:41: Server stopped gracefully
+[INFO]2025/07/21 12:59:33 logger.go:41: Logger starter
+[INFO]2025/07/21 12:59:33 logger.go:41: starting server port 8080
+[INFO]2025/07/21 12:59:52 logger.go:41: GetListSubscription handler called method GET path /api/subscriptions
+[DEBUG]2025/07/21 12:59:52 logger.go:48: Parse params limit,offset in query
+[DEBUG]2025/07/21 12:59:52 logger.go:48: Calling service to get list subscription params 2 1
+[INFO]2025/07/21 12:59:52 logger.go:41: Successfully get list subscrition params 2 1
+[INFO]2025/07/21 13:01:07 logger.go:41: Server stopped gracefully
+[INFO]2025/07/21 13:01:10 logger.go:41: Logger starter
+[INFO]2025/07/21 13:01:10 logger.go:41: starting server port 8080
+[INFO]2025/07/21 13:01:16 logger.go:41: GetListSubscription handler called method GET path /api/subscriptions
+[DEBUG]2025/07/21 13:01:16 logger.go:48: Parse params limit,offset in query
+[DEBUG]2025/07/21 13:01:16 logger.go:48: Calling service to get list subscription params 2 1
+[INFO]2025/07/21 13:01:16 logger.go:41: Successfully get list subscrition params limit 2 offset 1
+[INFO]2025/07/21 13:01:56 logger.go:41: GetListSubscription handler called method GET path /api/subscriptions
+[DEBUG]2025/07/21 13:01:56 logger.go:48: Parse params limit,offset in query
+[DEBUG]2025/07/21 13:01:56 logger.go:48: Calling service to get list subscription params 2 1
+[INFO]2025/07/21 13:01:56 logger.go:41: Successfully get list subscrition params limit 2 offset 1
+[INFO]2025/07/21 13:10:44 logger.go:41: Server stopped gracefully
+[INFO]2025/07/21 13:24:13 logger.go:41: Logger starter
+[INFO]2025/07/21 13:24:13 logger.go:41: starting server port 8080
+[INFO]2025/07/21 13:24:26 logger.go:41: GetListSubscription handler called method GET path /api/subscriptions
+[DEBUG]2025/07/21 13:24:26 logger.go:48: Parse params limit,offset in query
+[DEBUG]2025/07/21 13:24:26 logger.go:48: Calling service to get list subscription params limit 0 offset 0
+[INFO]2025/07/21 13:24:26 logger.go:41: Install default value for limit,offset
+[DEBUG]2025/07/21 13:24:26 logger.go:48: Calling db layer for get all subscriptions
+[INFO]2025/07/21 13:24:26 logger.go:41: Successfully get list subscrition params limit 0 offset 0
+[INFO]2025/07/21 13:27:51 logger.go:41: GetSubscription handler called method GET path /api/subscriptions/62f1fc15-37b8-4688-9d11-2a30773e767c
+[DEBUG]2025/07/21 13:27:51 logger.go:48: Start parse subscription id
+[DEBUG]2025/07/21 13:27:51 logger.go:48: Calling service to get subscription subscription_id 62f1fc15-37b8-4688-9d11-2a30773e767c
+[DEBUG]2025/07/21 13:27:51 logger.go:48: Calling db layer for get subscription by id
+[INFO]2025/07/21 13:27:51 logger.go:41: Subscription successfully get subscription_id 62f1fc15-37b8-4688-9d11-2a30773e767c service_name Yandex Pro user_id 550e8400-e29b-41d4-a716-446655448200
+[INFO]2025/07/21 13:28:41 logger.go:41: UpdateSubscription handler called method PATCH path /api/subscriptions/62f1fc15-37b8-4688-9d11-2a30773e767c
+[INFO]2025/07/21 13:28:41 logger.go:41: Started parse id in path
+[DEBUG]2025/07/21 13:28:41 logger.go:48: Decode request body
+[DEBUG]2025/07/21 13:28:41 logger.go:48: Request body decoded successfully
+[DEBUG]2025/07/21 13:28:41 logger.go:48: Start create map for fields from request body
+[DEBUG]2025/07/21 13:28:41 logger.go:48: Create field price
+[DEBUG]2025/07/21 13:28:41 logger.go:48: Calling service to delete subscription by id subscription_id 62f1fc15-37b8-4688-9d11-2a30773e767c fields map[price:599]
+[DEBUG]2025/07/21 13:28:41 logger.go:48: Calling db layer for update subscription by fields
+[INFO]2025/07/21 13:28:41 logger.go:41: Successfully update subscription
+[INFO]2025/07/21 13:28:49 logger.go:41: UpdateSubscription handler called method PATCH path /api/subscriptions/62f1fc15-37b8-4688-9d11-2a30773e767c
+[INFO]2025/07/21 13:28:49 logger.go:41: Started parse id in path
+[DEBUG]2025/07/21 13:28:49 logger.go:48: Decode request body
+[DEBUG]2025/07/21 13:28:49 logger.go:48: Request body decoded successfully
+[DEBUG]2025/07/21 13:28:49 logger.go:48: Start create map for fields from request body
+[DEBUG]2025/07/21 13:28:49 logger.go:48: Create field price
+[DEBUG]2025/07/21 13:28:49 logger.go:48: Calling service to delete subscription by id subscription_id 62f1fc15-37b8-4688-9d11-2a30773e767c fields map[price:900]
+[DEBUG]2025/07/21 13:28:49 logger.go:48: Calling db layer for update subscription by fields
+[INFO]2025/07/21 13:28:49 logger.go:41: Successfully update subscription
+[INFO]2025/07/21 13:57:37 logger.go:41: Server stopped gracefully
+[INFO]2025/07/21 13:57:43 logger.go:41: Logger starter
+[FATAL]2025/07/21 13:57:43 logger.go:62: Failed to open DB error failed to connect to `user=artem database=subscription_service`: 127.0.0.1:5433 (127.0.0.1): dial error: dial tcp 127.0.0.1:5433: connect: connection refused
