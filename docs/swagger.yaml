@@ -1,0 +1,290 @@
+definitions:
+  api.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  api.TotalCostResponse:
+    properties:
+      total:
+        type: integer
+    type: object
+  api.UpdateResponce:
+    properties:
+      status:
+        type: integer
+    type: object
+  objects.Subscription:
+    properties:
+      end_date:
+        description: Окончание подписки
+        example: 03-2025
+        type: string
+      id:
+        description: уникальный идендификатор
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+      price:
+        description: Цена подписки
+        example: 599
+        type: integer
+      service_name:
+        description: Название сервиса
+        example: Netflix
+        type: string
+      start_date:
+        description: Начало активации подписки
+        example: 09-2025
+        type: string
+      user_id:
+        description: уникальный id пользователя
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+    type: object
+  objects.SubscriptionCreateRequest:
+    properties:
+      end_date:
+        example: 03-2025
+        type: string
+      price:
+        example: 599
+        type: integer
+      service_name:
+        example: Netflix
+        type: string
+      start_date:
+        example: 09-2025
+        type: string
+      user_id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        type: string
+    required:
+    - price
+    - service_name
+    - start_date
+    - user_id
+    type: object
+  objects.SubscriptionUpdateRequest:
+    properties:
+      end_date:
+        example: 03-2025
+        type: string
+      price:
+        example: 599
+        type: integer
+      service_name:
+        example: Netflix
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/subscriptions:
+    get:
+      consumes:
+      - application/json
+      description: Получаем все подписки которые есть
+      parameters:
+      - description: Лимит записей (по умолчанию 10)
+        in: query
+        name: limit
+        type: integer
+      - description: Смещение (по умолчанию 0)
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/objects.Subscription'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Получаем подписки
+      tags:
+      - subscriptions
+    post:
+      consumes:
+      - application/json
+      description: Создать новую запись о подписке пользователя
+      parameters:
+      - description: Данные подписки
+        in: body
+        name: sub
+        required: true
+        schema:
+          $ref: '#/definitions/objects.SubscriptionCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/objects.Subscription'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Создать подписку
+      tags:
+      - subscriptions
+  /api/subscriptions/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляем подписку по указанному id
+      parameters:
+      - description: ID подписки в формате UUID
+        example: '"550e8400-e29b-41d4-a716-446655440000"'
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Подписка успешно удалена
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Удаление подписки
+      tags:
+      - subscriptions
+    get:
+      consumes:
+      - application/json
+      description: Получаем подписку по id
+      parameters:
+      - description: ID подписки
+        example: '"550e8400-e29b-41d4-a716-446655440000"'
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/objects.Subscription'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Получить подписку
+      tags:
+      - subscriptions
+    patch:
+      consumes:
+      - application/json
+      description: Обновляем подписку по указанному полю
+      parameters:
+      - description: ID подписки формата UUID
+        example: '"550e8400-e29b-41d4-a716-446655440000"'
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Поля для обновления
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/objects.SubscriptionUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UpdateResponce'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Обновляем подписку
+      tags:
+      - subscriptions
+  /api/subscriptions/total:
+    get:
+      consumes:
+      - application/json
+      description: Подсчитываем суммарную стоимость всех подписок за выбранный период
+      parameters:
+      - description: ID пользователя (UUID) для фильтрации
+        example: '"550e8400-e29b-41d4-a716-446655440000"'
+        in: query
+        name: user_id
+        type: string
+      - description: Название сервиса для фильтрации
+        example: '"Netflix"'
+        in: query
+        name: service_name
+        type: string
+      - description: Начало периода (формат MM-YYYY)
+        example: '"01-2025"'
+        in: query
+        name: start
+        required: true
+        type: string
+      - description: Конец периода (формат MM-YYYY)
+        example: '"10-2025"'
+        in: query
+        name: end
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.TotalCostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Подсчет стоимости
+      tags:
+      - subscriptions
+swagger: "2.0"
