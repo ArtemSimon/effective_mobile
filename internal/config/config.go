@@ -9,6 +9,7 @@ type Config_PG struct {
 	DBPassword string `mapstructure:"DB_PASSWORD"`
 	DBName     string `mapstructure:"DB_NAME"`
 	DBSSLMode  string `mapstructure:"DB_SSLMODE"`
+	Http_Port  string `mapstructure:"HTTP_PORT"`
 }
 
 func Load_Config_PG() (*Config_PG, error) {
