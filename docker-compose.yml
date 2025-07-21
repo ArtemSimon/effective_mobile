@@ -1,6 +1,20 @@
 version: '3.9'
 
 services:
+  rest_service:
+    # image: artemsim/effective_mobile_hub:v2
+    build: .
+    container_name: rest_service
+    env_file: ".env"
+    ports:
+      - 8080:8080
+    networks:
+      rest_api_app:
+        aliases: [rest_service]
+    depends_on:
+      - pg_subscription_service
+
+
   pg_subscription_service:
     image: postgres
     env_file: ".env"
@@ -9,6 +23,11 @@ services:
       - 5433:5432
     volumes: 
       - pg_volume_subscription_service:/var/lib/postgres/data
+    healthcheck:
+      test: [ "CMD-SHELL", "psql -U $${POSTGRES_USER} -d $${POSTGRES_DB} -c 'SELECT 1' || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     networks:
       rest_api_app:
         aliases: [pg_subscription_service]

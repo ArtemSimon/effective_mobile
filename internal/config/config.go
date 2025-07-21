@@ -17,13 +17,22 @@ type Config_PG struct {
 }
 
 func Load_Config_PG(logger *logger_module.Logger) (*Config_PG, error) {
-	viper.SetConfigFile(".env") // Указываем файл с конфигом
-	viper.AutomaticEnv()        // читает переменные из окружения(переопределяя переменные из .env)
+	// viper.SetConfigFile(".env") // Указываем файл с конфигом
+
+	viper.AutomaticEnv() // читает переменные из окружения(переопределяя переменные из .env)
+
+	viper.BindEnv("DB_HOST")
+	viper.BindEnv("DB_PORT")
+	viper.BindEnv("DB_USER")
+	viper.BindEnv("DB_PASSWORD")
+	viper.BindEnv("DB_NAME")
+	viper.BindEnv("DB_SSLMODE")
+	viper.BindEnv("HTTP_PORT")
 
 	// Читаем и загружаем файл конфига
-	if err := viper.ReadInConfig(); err != nil {
-		logger.Fatal("Failed to read config", "error", err)
-	}
+	// if err := viper.ReadInConfig(); err != nil {
+	// logger.Fatal("Failed to read config", "error", err)
+	// }
 
 	var config Config_PG
 	// Преобразуем данные которые получили в нашу структуру(Config_PG)
