@@ -1,0 +1,50 @@
+[INFO]2025/07/20 19:33:18 logger.go:41: Logger started
+[INFO]2025/07/20 19:33:18 logger.go:41: starting server port 8080
+[INFO]2025/07/20 19:33:42 logger.go:41: Logger started
+[INFO]2025/07/20 19:33:42 logger.go:41: starting server port 8080
+[Error]2025/07/20 19:33:42 logger.go:62: Server failed error listen tcp :8080: bind: address already in use
+[INFO]2025/07/20 19:34:24 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 19:35:00 logger.go:41: Logger starter
+[INFO]2025/07/20 19:35:00 logger.go:41: starting server port 8080
+[Error]2025/07/20 19:35:00 logger.go:62: Server failed error listen tcp :8080: bind: address already in use
+[INFO]2025/07/20 19:36:05 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 19:36:09 logger.go:41: Logger starter
+[INFO]2025/07/20 19:36:09 logger.go:41: starting server port 8080
+[Error]2025/07/20 19:36:09 logger.go:62: Server failed error listen tcp :8080: bind: address already in use
+[INFO]2025/07/20 19:36:21 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 19:36:32 logger.go:41: Logger starter
+[Error]2025/07/20 19:36:32 logger.go:62: Server failed error listen tcp :8080: bind: address already in use
+[INFO]2025/07/20 19:37:34 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 19:37:38 logger.go:41: Logger starter
+[Error]2025/07/20 19:37:38 logger.go:62: Server failed error listen tcp :8080: bind: address already in use
+[INFO]2025/07/20 19:37:45 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 19:39:46 logger.go:41: Logger starter
+[INFO]2025/07/20 19:39:46 logger.go:41: dfaf
+[INFO]2025/07/20 19:41:44 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 19:42:53 logger.go:41: Logger starter
+[INFO]2025/07/20 19:43:30 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 19:43:32 logger.go:41: Logger starter
+[INFO]2025/07/20 19:43:32 logger.go:41: starting server port 8080
+[INFO]2025/07/20 19:46:07 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 21:21:16 logger.go:41: Logger starter
+[INFO]2025/07/20 21:21:16 logger.go:41: starting server port 8080
+[INFO]2025/07/20 21:21:41 logger.go:41: GetSubscription handler called
+[INFO]2025/07/20 21:21:41 logger.go:41: Get subcription by id 0dd57e11-8810-49fa-93ec-2dee7e124c73
+[INFO]2025/07/20 21:29:16 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 21:51:36 logger.go:41: Logger starter
+[INFO]2025/07/20 21:51:36 logger.go:41: starting server port 8080
+[INFO]2025/07/20 21:52:23 logger.go:41: CreateSubscription handler called method POST path /api/subscriptions
+[DEBUG]2025/07/20 21:52:23 logger.go:48: Decode request body
+[DEBUG]2025/07/20 21:52:23 logger.go:48: Request body decoded successfully service_name Yandex Pro user_id 550e8400-e29b-41d4-a716-446655448200
+[DEBUG]2025/07/20 21:52:23 logger.go:48: Started parse start date start_date 03-2025
+[DEBUG]2025/07/20 21:52:23 logger.go:48: Started parse user ID user_id 550e8400-e29b-41d4-a716-446655448200
+[DEBUG]2025/07/20 21:52:23 logger.go:48: Start parse end date end_date 09-2025
+[INFO]2025/07/20 21:52:23 logger.go:41: Creating subscription service_name Yandex Pro user_id 550e8400-e29b-41d4-a716-446655448200 start_date 03-2025 price 900
+[INFO]2025/07/20 21:52:23 logger.go:41: Subscription created successfully service_name Yandex Pro
+[INFO]2025/07/20 21:57:51 logger.go:41: Server stopped gracefully
+[INFO]2025/07/20 21:57:53 logger.go:41: Logger starter
+[INFO]2025/07/20 21:57:53 logger.go:41: starting server port 8080
+[INFO]2025/07/20 21:58:10 logger.go:41: GetSubscription handler called method GET path /api/subscriptions/cf542b22-3ed8-487a-b745-64554fc96eac
+[DEBUG]2025/07/20 21:58:10 logger.go:48: Calling service to get subscription subscription_id cf542b22-3ed8-487a-b745-64554fc96eac
+[INFO]2025/07/20 21:58:10 logger.go:41: Subscription successfully get subscription_id cf542b22-3ed8-487a-b745-64554fc96eac service_name Yandex user_id 550e8400-e29b-41d4-a716-446655440000
+[INFO]2025/07/20 22:00:58 logger.go:41: Server stopped gracefully
