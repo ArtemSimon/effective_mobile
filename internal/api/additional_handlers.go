@@ -23,33 +23,45 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /api/subscriptions/total [get]
 func (handler *SubscriptionHandler) GetTotalCost(w http.ResponseWriter, r *http.Request) {
-	// logger.Println("GetTotalCost handler called")
+	handler.logger.Info("GetTotalCost handler called", "method", r.Method, "path", r.URL.Path)
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	defer cancel()
 
+	handler.logger.Debug("Getting params from query")
 	params := r.URL.Query()
 	userID, _ := uuid.Parse(params.Get("user_id"))
 
 	serviceName := params.Get("service_name")
 
+	handler.logger.Debug("Parsing param start date")
 	start, err := time.Parse("01-2006", params.Get("start"))
 	if err != nil {
+		handler.logger.Error("Failed parse start invalid date format",
+			"error", err.Error(),
+			"status_code", http.StatusBadRequest)
 		sendError(w, http.StatusBadRequest, "invalid start date format")
 		return
 	}
-
+	handler.logger.Debug("Parsing param end date")
 	end, err := time.Parse("01-2006", params.Get("end"))
 	if err != nil {
+		handler.logger.Error("Failed parse end invalid date format",
+			"error", err.Error(),
+			"status_code", http.StatusBadRequest)
 		sendError(w, http.StatusBadRequest, "invalid end date format")
 		return
 	}
+	handler.logger.Debug("Calling service to get total cost")
 
 	total, err := handler.service.GetTotalCost(ctx, userID, serviceName, start, end)
 	if err != nil {
+		handler.logger.Error("Failed get total cost for subscrioptions",
+			"error", err.Error(),
+			"status_code", http.StatusBadRequest)
 		sendError(w, http.StatusInternalServerError, "internal server error")
 		return
 	}
-
+	handler.logger.Info("Successfully get total cost")
 	renderJSON(w, http.StatusOK, map[string]int{"total": total})
 }
 

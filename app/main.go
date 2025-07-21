@@ -36,13 +36,13 @@ func main() {
 
 	logger.Info("Logger starter")
 	// 2. Загрузка конфигурации
-	conf, err := config.Load_Config_PG()
+	conf, err := config.Load_Config_PG(logger)
 	if err != nil {
 		logger.Fatal("Failed to load config", "error", err)
 	}
 
 	// 3. Подключение к PostgreSQL
-	db, err := repository.NewConnectPostgresDB(conf)
+	db, err := repository.NewConnectPostgresDB(logger, conf)
 	if err != nil {
 		logger.Fatal("Failed to connect to database", "error", err)
 	}
@@ -53,8 +53,8 @@ func main() {
 	}
 
 	// 5. Инициализация слоёв приложения
-	gorm_repo := repository.NewGormRepo(db)
-	subService := service.NewSubciptionService(gorm_repo)
+	gorm_repo := repository.NewGormRepo(db, logger)
+	subService := service.NewSubciptionService(gorm_repo, logger)
 	subHandler := api.NewSubciptionHandler(subService, logger)
 
 	// 6. Настройка роутера

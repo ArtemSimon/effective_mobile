@@ -57,8 +57,6 @@ func sendError(w http.ResponseWriter, code int, message string) {
 // @Router /api/subscriptions [post]
 func (handler *SubscriptionHandler) CreateSubscription(w http.ResponseWriter, r *http.Request) {
 
-	handler.logger.Info("CreateSubscription handler called", "method", r.Method, "path", r.URL.Path)
-
 	ctx, cancel := context.WithTimeout(r.Context(), 7*time.Second)
 	defer cancel()
 
@@ -125,6 +123,8 @@ func (handler *SubscriptionHandler) CreateSubscription(w http.ResponseWriter, r 
 		"start_date", sub.StartDate.Format("01-2006"),
 		"price", sub.Price)
 
+	handler.logger.Debug("Calling service to create subscription")
+
 	if err := handler.service.Create(ctx, sub); err != nil {
 		handler.logger.Error("Failed to create subscription",
 			"error", err.Error(),
@@ -155,6 +155,7 @@ func (handler *SubscriptionHandler) GetSubscription(w http.ResponseWriter, r *ht
 	ctx, cancel := context.WithTimeout(r.Context(), 7*time.Second)
 	defer cancel()
 
+	handler.logger.Debug("Start parse subscription id")
 	id, err := uuid.Parse(mux.Vars(r)["id"])
 	if err != nil {
 		handler.logger.Error("Invalid subscription ID format",
@@ -197,17 +198,27 @@ func (handler *SubscriptionHandler) GetSubscription(w http.ResponseWriter, r *ht
 // @Failure 500 {object} ErrorResponse
 // @Router /api/subscriptions [get]
 func (handler *SubscriptionHandler) GetListSubscription(w http.ResponseWriter, r *http.Request) {
+	handler.logger.Info("GetListSubscription handler called", "method", r.Method,
+		"path", r.URL.Path)
 	ctx, cancel := context.WithTimeout(r.Context(), 7*time.Second)
 	defer cancel()
 
+	handler.logger.Debug("Parse params limit,offset in query")
 	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 	offset, _ := strconv.Atoi(r.URL.Query().Get("offset"))
 
+	handler.logger.Debug("Calling service to get list subscription",
+		"params", "limit", limit, "offset", offset)
+
 	subscriptions, err := handler.service.Get_List(ctx, limit, offset)
 	if err != nil {
+		handler.logger.Error("Failed to get all subscriptions",
+			"error", err.Error(),
+			"status_code", http.StatusInternalServerError)
 		sendError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
+	handler.logger.Info("Successfully get list subscrition", "params", "limit", limit, "offset", offset)
 	renderJSON(w, http.StatusOK, subscriptions)
 }
 
@@ -225,48 +236,68 @@ func (handler *SubscriptionHandler) GetListSubscription(w http.ResponseWriter, r
 // @Failure 500 {object} ErrorResponse
 // @Router /api/subscriptions/{id} [patch]
 func (handler *SubscriptionHandler) UpdateSubscription(w http.ResponseWriter, r *http.Request) {
+	handler.logger.Info("UpdateSubscription handler called", "method", r.Method,
+		"path", r.URL.Path)
 	ctx, cancel := context.WithTimeout(r.Context(), 7*time.Second)
 	defer cancel()
 
 	// Получаем ID из пути
+	handler.logger.Info("Started parse id in path")
 	variable := mux.Vars(r)
 	id, err := uuid.Parse(variable["id"])
 	if err != nil {
+		handler.logger.Error("Invalid format for subscription id",
+			"error", err.Error(),
+			"status_code", http.StatusBadRequest)
 		sendError(w, http.StatusBadRequest, "invalid subscription id")
 		return
 	}
 
 	var updateStruct objects.SubscriptionUpdateRequest
+	handler.logger.Debug("Decode request body")
 	if err := json.NewDecoder(r.Body).Decode(&updateStruct); err != nil {
+		handler.logger.Error("failed to request body", "error", err, "status_code", http.StatusBadRequest)
 		sendError(w, http.StatusBadRequest, "invalid request fields")
 		return
 	}
 
+	handler.logger.Debug("Request body decoded successfully")
+
 	// Проверяем, что есть хотя бы одно поле для обновления
 	if updateStruct.ServiceName == nil && updateStruct.Price == nil && updateStruct.EndDate == nil {
+		handler.logger.Error("No fields for update", "error", err, http.StatusBadRequest)
 		sendError(w, http.StatusBadRequest, "no fields for update")
 		return
 	}
-
+	handler.logger.Debug("Start create map for fields from request body")
 	// Преобразуем в map для GORM
 	fields := make(map[string]interface{})
 	if updateStruct.ServiceName != nil {
+		handler.logger.Debug("Create field service name")
 		fields["service_name"] = *updateStruct.ServiceName
 	}
 	if updateStruct.Price != nil {
+		handler.logger.Debug("Create field price")
 		fields["price"] = *updateStruct.Price
 	}
 	if updateStruct.EndDate != nil {
 		// Преобразуем строку даты в time.Time
+		handler.logger.Debug("Parse and create field endDate")
 		if endDate, err := time.Parse("01-2006", *updateStruct.EndDate); err == nil {
 			fields["end_date"] = endDate
 		}
 	}
+	handler.logger.Debug("Calling service to delete subscription by id",
+		"subscription_id", id, "fields", fields)
 
 	if err := handler.service.Update(ctx, id, fields); err != nil {
+		handler.logger.Error("Failed update subscription by fields",
+			"error", err.Error(),
+			"status_code", http.StatusNotFound)
 		sendError(w, http.StatusNotFound, "subscription not found")
 		return
 	}
+	handler.logger.Info("Successfully update subscription")
 	renderJSON(w, http.StatusOK, map[string]string{"status": "success"})
 
 }
@@ -282,20 +313,33 @@ func (handler *SubscriptionHandler) UpdateSubscription(w http.ResponseWriter, r 
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
 // @Router /api/subscriptions/{id} [delete]
-func (h *SubscriptionHandler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
+func (handler *SubscriptionHandler) DeleteSubscription(w http.ResponseWriter, r *http.Request) {
+	handler.logger.Info("DeleteSubscription handler called", "method", r.Method,
+		"path", r.URL.Path)
 	ctx, cancel := context.WithTimeout(r.Context(), 3*time.Second)
 	defer cancel()
 
+	handler.logger.Debug("Start parse id")
 	vars := mux.Vars(r)
 	id, err := uuid.Parse(vars["id"])
 	if err != nil {
+		handler.logger.Error("Invalid subscription id format",
+			"error", err.Error(),
+			"subscription_id", id,
+			"status_code", http.StatusBadRequest)
 		sendError(w, http.StatusBadRequest, "invalid subscription ID")
 		return
 	}
+	handler.logger.Debug("Calling service to delete subscription by id",
+		"subscription_id", id)
 
-	if err := h.service.Delete(ctx, id); err != nil {
+	if err := handler.service.Delete(ctx, id); err != nil {
+		handler.logger.Error("Failed delete subscription by id",
+			"error", err.Error(),
+			"status_code", http.StatusNotFound)
 		sendError(w, http.StatusNotFound, "subscription not found")
 		return
 	}
+	handler.logger.Info("Successfully delete subscription by id", "id", id)
 	renderJSON(w, http.StatusNoContent, nil)
 }
