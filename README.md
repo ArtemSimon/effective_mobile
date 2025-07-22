@@ -2,6 +2,7 @@
 
 # Структура проекта
 
+```
 /effective_mobile
 ├── app                    # Точка входа (main.go)
 ├── /internal
@@ -21,6 +22,7 @@
 ├── go.sum
 ├── go.mod
 └── README.md 
+```
 
 ## ⚙️ Технологии
 - Go 1.23
@@ -63,7 +65,9 @@ HTTP_PORT=порт для приложения
 
 # Клонируйте репозиторий
 
+```
 git clone https://github.com/ArtemSimon/effective_mobile.git
+```
 
 # Перейдите в директорию проекта
 
