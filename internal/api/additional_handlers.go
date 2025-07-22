@@ -57,7 +57,7 @@ func (handler *SubscriptionHandler) GetTotalCost(w http.ResponseWriter, r *http.
 	if err != nil {
 		handler.logger.Error("Failed get total cost for subscrioptions",
 			"error", err.Error(),
-			"status_code", http.StatusBadRequest)
+			"status_code", http.StatusInternalServerError)
 		sendError(w, http.StatusInternalServerError, "internal server error")
 		return
 	}
