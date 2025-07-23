@@ -81,7 +81,7 @@ cd effective_mobile
 
 1. Скачиваем образ к себе
 ```
-docker pull artemsim/effective_mobile_hub:latest
+docker pull artemsim/effective_mobile_hub:v4
 ```
 2.Запускаем с готовым образом docker compose  
 ```
